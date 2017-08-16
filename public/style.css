@@ -1,0 +1,21 @@
+.container{
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.boxes{
+  /*display: flex;*/
+  /*justify-content: center;*/
+  border: 1px grey solid;
+  border-radius: 2px;
+  /*padding: -300px;*/
+}
+h3{
+  color: #53aac7;
+  text-decoration: none;
+}
+.forHire{
+  color: red;
+  text-decoration: none;
+}
