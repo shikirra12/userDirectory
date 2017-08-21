@@ -14,13 +14,23 @@ app.get('/', function(req, res) {
   res.render('index', data)
 });
 
-app.get('/listing/:id', function(req, res) {
-  console.log(req.param.id);
+app.get('/user/:id', function(req, res) {
+  let id = req.params.id;
+  let user = data.users.find(function(user) {
+    return user.id == id;
+  });
   // let id = req.params.id;
   // console.log(id);
-  res.send('listing', data.users[req.params.id-1]);
+  // data.users[req.params.id-1]
+  res.send('listing', user);
 })
 
 app.listen(3000, function() {
   console.log("App is running!");
 })
+
+// params: lets you grab items from a request
+// ex: req.params.id;
+// req: request from client
+// params: grabbing a dynamic routte
+// id: is the property being grabbed
