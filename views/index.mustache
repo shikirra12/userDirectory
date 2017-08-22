@@ -6,9 +6,13 @@
     <link rel="stylesheet" href="../style.css">
   </head>
   <body>
+    <nav>
+      <a href="/unemployed/{{job}}">Unemployed</a>
+      <a href="/employed/{{job}}">Employed</a>
+    </nav>
     <h1>Index</h1>
     {{#users}}
-      <a href="/listing/{{id}}">
+      <a href="/profile/{{id}}">
         <div class="container">
           <div class="boxes">
 
@@ -25,7 +29,7 @@
 
           </div>
         </div>
-      </a>
+        </a>
     {{/users}}
   </body>
 </html>

@@ -2,28 +2,17 @@ const express = require('express');
 const path = require('path');
 const mustacheExpress = require('mustache-express');
 const app = express();
-const data = require('./data');
+const router = require('./routes/user.js');
 
 app.engine('mustache', mustacheExpress());
-app.set('views', './public/views');
+app.set("views", path.join(__dirname, "views"));
+app.set('views', './views');
 app.set('view engine', 'mustache');
+// app.set('index', 'index');
 
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, "public")));
 
-app.get('/', function(req, res) {
-  res.render('index', data)
-});
-
-app.get('/user/:id', function(req, res) {
-  let id = req.params.id;
-  let user = data.users.find(function(user) {
-    return user.id == id;
-  });
-  // let id = req.params.id;
-  // console.log(id);
-  // data.users[req.params.id-1]
-  res.send('listing', user);
-})
+app.use(router);
 
 app.listen(3000, function() {
   console.log("App is running!");

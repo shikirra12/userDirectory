@@ -1,0 +1,17 @@
+{{#users}}
+  <a href="/profile/{{id}}">
+    <div class="container">
+      <div class="boxes">
+
+        <img src="{{avatar}}">
+
+        <h3>{{name}}</h3>
+
+          {{#job}}
+          <p>{{job}}, {{company}}</p>
+          {{/job}}
+
+      </div>
+    </div>
+    </a>
+{{/users}}
