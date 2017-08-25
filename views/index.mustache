@@ -9,6 +9,8 @@
     <nav>
       <a href="/unemployed/{{job}}">Unemployed</a>
       <a href="/employed/{{job}}">Employed</a>
+      <a href="/logout">Log Out</a>
+      <a href="/profile{{_id}}">My Profile</a>
     </nav>
     <h1>Index</h1>
     {{#users}}
@@ -16,7 +18,7 @@
         <div class="container">
           <div class="boxes">
 
-            <img src="{{avatar}}">
+            <img src={{avatar}}>
 
             <h3>{{name}}</h3>
 
