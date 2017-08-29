@@ -1,4 +1,9 @@
 {{#users}}
+<nav>
+  <a href="/logout">LogOut</a>
+  {{#loggedUser}}<a href="/edit/{{id}}">Edit Profile</a>{{/loggedUser}}
+  <a href="/index">Listings</a>
+</nav>
 <div class="container">
         <div class="picture">
           <img src="{{avatar}}">

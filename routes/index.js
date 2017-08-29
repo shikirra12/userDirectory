@@ -34,7 +34,7 @@ const getListings = function(req, res, next){
   // });
   User.find({}).sort('name')
   .then(function(users) {
-    data = users
+    data = users;
     next();
   })
   .catch(function(err) {
@@ -43,38 +43,41 @@ const getListings = function(req, res, next){
   });
 };
 
-// const requireLogin = function(req, res, next) {
-//   if(req.user){
-//     console.log(req.user);
-//     next();
-//   } else {
-//     res.redirect('/');
-//   }
-// };
+const requireLogin = function(req, res, next) {
+  if(req.user){
+    console.log('REQ USER',req.user);
+    next();
+  } else {
+    res.redirect('/');
+  }
+};
 
-// const login = function(req, res, next) {
-//   if (req.user) {
-//     res.redirect('/index')
-//   } else {
-//     next();
-//   }
-// };
+const login = function(req, res, next) {
+  if (req.user) {
+    res.redirect('/index')
+  } else {
+    next();
+  }
+};
 
+// cannot get password to serialize nor can i login in but the i can create a signup and reroute to the login page. login page will not post to the index page. need to allow user to edit their profile
+router.get('/', login, function(req, res) {
 
-router.get('/', function(req, res) {
+  console.log(req.user);
   res.render('login');
 });
 
-router.post('/', passport.authenticate('local', {
-  sucessRedirect: '/index',
+router.post('/', login, passport.authenticate('local', {
+  successRedirect: 'index',
   failureRedirect: '/',
   failureFlash: true
 }))
-
-// router.get('/logout', function(req, res) {
-//   req.logout();
-//   res.redirect('/');
-// });
+//
+// router.post('/', login, passport.authenticate('local', {
+//   sucessRedirect: 'index',
+//   failureRedirect: '/',
+//   failureFlash: true
+// }));
 
 router.get('/signup', function(req, res) {
   res.render('signup');
@@ -105,14 +108,15 @@ router.post('/signup', function(req, res) {
   })
   .catch(function(data) {
     console.log(err);
-  res.redirect("/signup");
-});
+    res.redirect("/signup");
+  });
 });
 
 
-router.get('/index', getListings, function(req, res) {
+router.get('/index', getListings, requireLogin, function(req, res) {
+
    console.log("/index");
-  res.render('index', { users: data})
+  res.render('index', { users: data , loggedUser: req.user})
 });
 
 
@@ -140,7 +144,7 @@ router.get('/employed', function(req, res) {
   res.render('employed', {users: employed})
 });
 
-router.get('/profile/:id', getListings, function(req, res) {
+router.get('/profile/:id', getListings, requireLogin, function(req, res) {
   let id = req.params.id;
   let userToRender;
   data.forEach(function(user) {
@@ -149,10 +153,49 @@ router.get('/profile/:id', getListings, function(req, res) {
     }
   });
   console.log(userToRender);
-  res.render('profile', {users: userToRender});
+  res.render('profile', {users: userToRender, loggedUser: req.user });
 });
 
 
+router.get('/edit/:id', getListings, requireLogin, function(req, res) {
+  res.render('edit', {users: data, loggedUser: req.user})
+});
 
+// allow user to update their profile
+router.put('/edit/:id', function(req, res) {
+req.user.update({
+  username: req.body.username ,
+  password: req.body.password,
+  name: req.body.name,
+  email: req.body.email,
+  university: req.body.university,
+  job: req.body.job,
+  company: req.body.company,
+  skills: req.body.skills,
+  phone: req.body.phone,
+  address: {
+    street_num: req.body.street_num,
+    street_name:req.body.street_name,
+    city: req.body.city,
+    state_or_province: req.body.state_or_province,
+    postal_code: req.body.postal_code,
+    country: req.body.country
+  }
+}).then(function(data) {
+  console.log(data);
+  res.redirect('/profile');
+})
+.catch(function(data) {
+  console.log(err);
+  res.redirect('/edit');
+});
+});
+
+
+router.get('/logout', function(req, res) {
+  req.logout();
+  // req.session.destroy();
+  res.redirect('/');
+});
 
 module.exports = router;

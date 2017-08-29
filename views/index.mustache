@@ -10,7 +10,7 @@
       <a href="/unemployed/{{job}}">Unemployed</a>
       <a href="/employed/{{job}}">Employed</a>
       <a href="/logout">Log Out</a>
-      <a href="/profile{{_id}}">My Profile</a>
+      {{#loggedUser}}<a href="/profile/{{id}}">My Profile</a>{{/loggedUser}}
     </nav>
     <h1>Index</h1>
     {{#users}}

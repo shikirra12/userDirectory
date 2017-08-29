@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 mongoose.connect('mongodb://localhost:27017/robots')
 
 const userSchema = new mongoose.Schema({
+  avatar: {type: String},
   username: {type: String, lowercase: true, require: true, unique: true},
   passwordHash: {type: String, required: true},
   name: {type: String, required: true},
