@@ -6,7 +6,7 @@ const passport = require('passport');
 
 mongoose.connect('mongodb://localhost:27017/robots')
 
-let data = [];
+// let data = [];
 
 // let getData = function(db, callback) {
 //   let users = db.collection("users");
@@ -162,7 +162,7 @@ router.get('/edit/:id', getListings, requireLogin, function(req, res) {
 });
 
 // allow user to update their profile
-router.put('/edit/:id', function(req, res) {
+router.post('/edit/:id', function(req, res) {
 req.user.update({
   username: req.body.username ,
   password: req.body.password,
@@ -183,7 +183,7 @@ req.user.update({
   }
 }).then(function(data) {
   console.log(data);
-  res.redirect('/profile');
+  res.redirect('/profile/' + req.user.id);
 })
 .catch(function(data) {
   console.log(err);
